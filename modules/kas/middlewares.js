@@ -1,4 +1,3 @@
-
 const { LibAuthenticationMiddleware } = require("../../libs/authentications");
 const {
   LibValidationExceptionMiddleware,
@@ -7,13 +6,11 @@ const {
 } = require("../../libs/validations");
 
 /**
- * If you want to remove JWT authentication, 
+ * If you want to remove JWT authentication,
  * you can remove 'LibAuthenticationMiddleware' from your middleware list.
  */
 
-const KasMiddlewareList = LibValidationsMiddleware(
-  LibAuthenticationMiddleware
-);
+const KasMiddlewareList = LibValidationsMiddleware(LibAuthenticationMiddleware);
 
 const KasMiddlewareDetail = LibValidationsMiddleware(
   LibAuthenticationMiddleware
@@ -24,9 +21,9 @@ const KasMiddlewareCreate = LibValidationsMiddleware(
   /** Your middleware here (validations, sanitizing, etc..) */
 
   /**
-   * "LibValidationExceptionMiddleware" is suitable for validating data sent by the client in body. 
+   * "LibValidationExceptionMiddleware" is suitable for validating data sent by the client in body.
    * If you have your own handler, you can replace it.
-   * 
+   *
    * For example:
    *  ...
    *  LibValidationFields.CharField({ field: "field1" }),
@@ -41,14 +38,31 @@ const KasMiddlewareCreate = LibValidationsMiddleware(
    *  }),
    *  ...
    */
-
-  LibValidationExceptionMiddleware,
+  LibValidationFields.DateField({ field: "tanggal", format: "YYYY-MM-DD" }),
+  LibValidationFields.CharField({ field: "keterangan" }),
+  LibValidationFields.NumberField({
+    field: "pemasukkan",
+    required: false,
+    minLength: 0,
+  }),
+  LibValidationFields.NumberField({ field: "pengeluaran", required: false }),
+  LibValidationFields.CharField({ field: "nomorTransaksi", required: false }),
+  LibValidationExceptionMiddleware
 );
 
 const KasMiddlewareUpdate = LibValidationsMiddleware(
   LibAuthenticationMiddleware,
   /** Your middleware here (validations, sanitizing, etc..) */
-  LibValidationExceptionMiddleware,
+  LibValidationFields.DateField({ field: "tanggal", format: "YYYY-MM-DD" }),
+  LibValidationFields.CharField({ field: "keterangan" }),
+  LibValidationFields.NumberField({
+    field: "pemasukkan",
+    required: false,
+    minLength: 0,
+  }),
+  LibValidationFields.NumberField({ field: "pengeluaran", required: false }),
+  LibValidationFields.CharField({ field: "nomorTransaksi", required: false }),
+  LibValidationExceptionMiddleware
 );
 
 const KasMiddlewareDelete = LibValidationsMiddleware(
@@ -62,4 +76,3 @@ module.exports = {
   KasMiddlewareList,
   KasMiddlewareDelete,
 };
-  

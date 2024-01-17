@@ -30,6 +30,7 @@ const TerimaControllerCreate = async (req, res) => {
 const TerimaControllerDetail = async (req, res) => {
   try {
     const result = await Terima.findOne({ _id: req.params.id });
+    if (!result) throw { status: 404, message: "Not found" };
 
     return res.status(200).json(result);
   } catch (error) {
@@ -39,7 +40,7 @@ const TerimaControllerDetail = async (req, res) => {
 
 const TerimaControllerUpdate = async (req, res) => {
   try {
-    return res.status(200).json({ message: "tidak bisa update transaksi " });
+    return res.status(403).json({ message: "Not allowed" });
   } catch (error) {
     return LibHTTPResponseException(res, error);
   }
@@ -83,7 +84,7 @@ const TerimaControllerDiambil = async (req, res) => {
     );
 
     //buat record kas
-    KasServiceCreateFromTerima(result, req)
+    KasServiceCreateFromTerima(result, req);
 
     return res.status(200).json(result);
   } catch (error) {
@@ -94,7 +95,7 @@ const TerimaControllerDiambil = async (req, res) => {
 const TerimaControllerDelete = async (req, res) => {
   try {
     let result = Terima.findOne({ _id: req.params.id });
-    if (!result) throw { status: 404, message: "Not found" };
+    if (!result) throw { status: 403, message: "Not allowed" };
 
     await Terima.findByIdAndDelete(req.params.id, req.cleanedData);
 
