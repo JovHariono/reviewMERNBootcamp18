@@ -8,8 +8,13 @@ const { HelloRouter } = require("./modules/hello/routers");
 const { BarangRouter } = require("./modules/barang/routers");
 const { TerimaRouter } = require("./modules/terima/routers");
 const { KasRouter } = require("./modules/kas/routers");
+const cors = require("cors")
 
 const app = express();
+
+app.use(cors({
+  origin: "*",
+}))
 
 DatabaseMongoDBConnector({ hideSuccessMessage: false });
 
